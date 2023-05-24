@@ -49,8 +49,14 @@ function onShowImages(event) {
       Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
       renderMarkupImagesCard(hits);
       initializeLightBox();
-      loadMoreBtn.show();
-      loadMoreBtn.refs.button.classList.remove('is-hidden');
+      if (hits.length < 40) {
+        console.log(hits.length);
+        console.log(hits);
+        loadMoreBtn.refs.button.classList.add('is-hidden');
+      } else {
+        loadMoreBtn.show();
+        loadMoreBtn.refs.button.classList.remove('is-hidden');
+      }
     }
   });
 }
