@@ -1,4 +1,12 @@
 .search-form {
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  border-radius: 10px;
+  border: 5px dotted teal;
+  background-color: #eafafb;
   &__field {
     width: 360px;
     background: #fff;
@@ -9,4 +17,12 @@
     outline: 0;
     padding: 22px 18px;
   }
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  justify-content: center;
+  gap: 5px;
 }

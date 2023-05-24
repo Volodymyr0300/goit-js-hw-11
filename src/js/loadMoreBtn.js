@@ -1,15 +1,16 @@
 export default class LoadMoreBtn {
   constructor({ selector, hidden = false }) {
-    this.refs = this.getRefs(selector);
+    this.refs = {
+      button: document.querySelector(selector),
+    };
 
-    hidden && this.hide();
-  }
+    if (!this.refs.button) {
+      throw new Error(`No element found with the selector "${selector}".`);
+    }
 
-  getRefs(selector) {
-    const refs = {};
-    refs.button = document.querySelector(selector);
-
-    return refs;
+    if (hidden) {
+      this.hide();
+    }
   }
 
   show() {

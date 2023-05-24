@@ -16,8 +16,23 @@ const loadMoreBtn = new LoadMoreBtn({
 form.addEventListener('submit', onShowImages);
 loadMoreBtn.refs.button.addEventListener('click', onShowMoreImages);
 
+let lightBox;
+
+function initializeLightBox() {
+  lightBox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+  lightBox.refresh();
+}
+
 function onShowImages(event) {
   event.preventDefault();
+  const searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+
+  if (!searchQuery) {
+    return Notiflix.Notify.info('Please enter a search term.');
+  }
   clearBoxGallery();
   loadMoreBtn.hide();
 
@@ -26,18 +41,17 @@ function onShowImages(event) {
 
   imagesApiService.fetchImages().then(({ hits, total, totalHits }) => {
     if (hits.length === 0) {
-      return Notiflix.Notify.info(
+      Notiflix.Notify.info(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      loadMoreBtn.refs.button.classList.add('is-hidden');
+    } else {
+      Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+      renderMarkupImagesCard(hits);
+      initializeLightBox();
+      loadMoreBtn.show();
+      loadMoreBtn.refs.button.classList.remove('is-hidden');
     }
-
-    Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
-    renderMarkupImagesCard(hits);
-    lightBox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    }).refresh();
-    loadMoreBtn.show();
   });
 }
 
@@ -46,10 +60,7 @@ function onShowMoreImages(event) {
 
   imagesApiService.fetchImages().then(({ hits, total, totalHits }) => {
     renderMarkupImagesCard(hits);
-    lightBox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    }).refresh();
+    initializeLightBox();
   });
 }
 
