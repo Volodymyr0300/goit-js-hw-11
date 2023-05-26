@@ -67,6 +67,10 @@ function onShowMoreImages(event) {
   imagesApiService.fetchImages().then(({ hits, total, totalHits }) => {
     renderMarkupImagesCard(hits);
     initializeLightBox();
+
+    if (hits.length < 40) {
+      loadMoreBtn.refs.button.classList.add('is-hidden');
+    }
   });
 }
 
